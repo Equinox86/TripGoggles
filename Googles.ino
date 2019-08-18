@@ -3,6 +3,7 @@ const int col[] = {9,10,11,12};
 struct led { int row; int col; };
 led lights[28];
 boolean up = true; 
+int dTime = 800;
 
 //This will setup the outputs as 7 rows / 4 columns
 void setup() {
@@ -26,82 +27,18 @@ void setup() {
 void loop() {
   //digitalWrite(2,HIGH); //ROWS GO HIGH
   //digitalWrite(9,LOW);  //COLUMNS GO LOW
-  
-  //Twisty Arm 1
-  dTime = 850;
-  for(int i = 0; i<dTime; i++){
-  //Center Array
-  turnOn(lights[25]);
-  turnOn(lights[26]);
-  turnOn(lights[27]);
-  turnOn(lights[24]);
-  turnOff(lights[25]);
-  turnOff(lights[26]);
-  turnOff(lights[27]);
-  turnOff(lights[24]);
-  
-  turnOn(lights[0]);
-  turnOff(lights[0]);
-  turnOn(lights[16]);
-  turnOff(lights[16]);
-  turnOn(lights[8]);
-  turnOff(lights[8]);
-  turnOn(lights[20]);
-  turnOff(lights[20]);
-  turnOn(lights[4]);
-  turnOff(lights[4]);
-  turnOn(lights[18]);
-  turnOff(lights[18]);
-  turnOn(lights[22]);
-  turnOff(lights[22]);
-  turnOn(lights[12]);
-  turnOff(lights[12]); } 
-
-  //Mid point
-  for(int i = 0; i<dTime; i++){
-  //Center Array
-  turnOn(lights[25]);
-  turnOn(lights[26]);
-  turnOn(lights[27]);
-  turnOn(lights[24]);
-  turnOff(lights[25]);
-  turnOff(lights[26]);
-  turnOff(lights[27]);
-  turnOff(lights[24]);
-  
+  //Spiral();
+  //Spiral();
+  allOff();
+  for(int i = 0; i<10; i++){ 
+    PinWheel();
   }
+  allOff();
+  for(int i = 0; i<10; i++){ 
+    Centric();
+  }
+  allOff();
 
-  //Twisty Arm 2
-  for(int i = 0; i<dTime; i++){
-    //Center Array
-  turnOn(lights[25]);
-  turnOn(lights[26]);
-  turnOn(lights[27]);
-  turnOn(lights[24]);
-  turnOff(lights[25]);
-  turnOff(lights[26]);
-  turnOff(lights[27]);
-  turnOff(lights[24]);
-  //twitsting arms 1
-  
-  turnOn(lights[2]);
-  turnOff(lights[2]);
-  turnOn(lights[17]);
-  turnOff(lights[17]);
-  turnOn(lights[21]);
-  turnOff(lights[21]);
-  turnOn(lights[10]);
-  turnOff(lights[10]);
-  turnOn(lights[14]);
-  turnOff(lights[14]);
-  turnOn(lights[23]);
-  turnOff(lights[23]);
-  turnOn(lights[19]);
-  turnOff(lights[19]);
-  turnOn(lights[6]);
-  turnOff(lights[6]); 
-  } 
-    
 }
 
 
@@ -113,16 +50,18 @@ void turnOff(led l){
   digitalWrite(l.row,LOW);
   digitalWrite(l.col,HIGH);
 }
-void spiral() { 
-    for(int i = 0; i < 28; i++){ 
-    turnOn(lights[i]);
-    delay(100);
-    turnOff(lights[i]);
+void Spiral() { 
+  for(int i = 0; i < 28; i++){ 
+    for(int t =0; t<dTime; t++){ 
+        turnOn(lights[i]);
+        turnOff(lights[i]);
+      }
   }
   for(int i = 28; i >=0; i--){ 
-    turnOn(lights[i]);
-    delay(100);
-    turnOff(lights[i]);
+    for(int t =0; t<dTime; t++){ 
+        turnOn(lights[i]);
+        turnOff(lights[i]);
+    }
   }
 }
 
@@ -130,4 +69,90 @@ void allOff(){
   for(int i = 0; i < 28; i++){ 
     turnOff(lights[i]);
   }
+}
+
+void PinWheel(){ 
+   //Twisty Arm 1
+  int centerMod = 4;
+  
+  for(int i = 0; i<dTime; i++){
+  //Center Array 
+    turnOn(lights[25]);
+    turnOff(lights[25]);
+    turnOn(lights[26]);
+    turnOff(lights[26]);
+    turnOn(lights[27]);
+    turnOff(lights[27]);
+    turnOn(lights[24]);
+    turnOff(lights[24]);
+  
+    turnOn(lights[0]);
+    turnOff(lights[0]);
+    turnOn(lights[16]);
+    turnOff(lights[16]);
+    turnOn(lights[8]);
+    turnOff(lights[8]);
+    turnOn(lights[20]);
+    turnOff(lights[20]);
+    turnOn(lights[4]);
+    turnOff(lights[4]);
+    turnOn(lights[18]);
+    turnOff(lights[18]);
+    turnOn(lights[22]);
+    turnOff(lights[22]);
+    turnOn(lights[12]);
+    turnOff(lights[12]); } 
+
+  //Twisty Arm 2
+  for(int i = 0; i<dTime; i++){
+    //Center Array 
+    turnOn(lights[25]);
+    turnOff(lights[25]);
+    turnOn(lights[26]);
+    turnOff(lights[26]);
+    turnOn(lights[27]);
+    turnOff(lights[27]);
+    turnOn(lights[24]);
+    turnOff(lights[24]);
+    //twitsting arms 1
+    
+    turnOn(lights[2]);
+    turnOff(lights[2]);
+    turnOn(lights[17]);
+    turnOff(lights[17]);
+    turnOn(lights[21]);
+    turnOff(lights[21]);
+    turnOn(lights[10]);
+    turnOff(lights[10]);
+    turnOn(lights[14]);
+    turnOff(lights[14]);
+    turnOn(lights[23]);
+    turnOff(lights[23]);
+    turnOn(lights[19]);
+    turnOff(lights[19]);
+    turnOn(lights[6]);
+    turnOff(lights[6]); 
+  } 
+}
+
+void Centric() { 
+
+ for(int t = 0; t<dTime; t++){ 
+  for (int i =0; i < 16; i++){ 
+    turnOn(lights[i]);
+    turnOff(lights[i]);
+  }
+ }
+  for(int t = 0; t<dTime; t++){ 
+  for (int i =16; i < 24; i++){ 
+    turnOn(lights[i]);
+    turnOff(lights[i]);
+  }
+ }
+  for(int t = 0; t<dTime; t++){ 
+  for (int i =24; i < 28; i++){ 
+    turnOn(lights[i]);
+    turnOff(lights[i]);
+  }
+ }
 }
