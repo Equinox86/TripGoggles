@@ -28,7 +28,7 @@ void loop() {
   //digitalWrite(2,HIGH); //ROWS GO HIGH
   //digitalWrite(9,LOW);  //COLUMNS GO LOW
   //Spiral();
-  //Spiral();
+  Spiral();
   allOff();
   for(int i = 0; i<10; i++){ 
     PinWheel();
@@ -41,7 +41,6 @@ void loop() {
 
 }
 
-
 void turnOn(led l) { 
   digitalWrite(l.row,HIGH);
   digitalWrite(l.col,LOW);
@@ -52,13 +51,14 @@ void turnOff(led l){
 }
 void Spiral() { 
   for(int i = 0; i < 28; i++){ 
-    for(int t =0; t<dTime; t++){ 
+    for(int t =0; t<dTime*5; t++){ 
         turnOn(lights[i]);
         turnOff(lights[i]);
       }
   }
-  for(int i = 28; i >=0; i--){ 
-    for(int t =0; t<dTime; t++){ 
+  allOff();
+  for(int i = 27; i >=0; i--){ 
+    for(int t =0; t<dTime*5; t++){ 
         turnOn(lights[i]);
         turnOff(lights[i]);
     }
