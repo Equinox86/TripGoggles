@@ -2,7 +2,6 @@ const int row[] = {2,3,4,5,6,7,8};
 const int col[] = {9,10,11,12};
 struct led { int row; int col; };
 led lights[28];
-boolean up = true; 
 int dTime = 800;
 
 //This will setup the outputs as 7 rows / 4 columns
@@ -15,30 +14,33 @@ void setup() {
       pinMode(row[r], OUTPUT);
       digitalWrite(row[r], LOW); 
     }
+  //Light Mapping
   lights[0] = {row[0],col[0]}; lights[1] = {row[1],col[0]};lights[2] = {row[2],col[0]}; lights[3] = {row[3],col[0]}; lights[4] = {row[4],col[0]}; lights[5] = {row[5],col[0]}; lights[6] = {row[6],col[0]};
   lights[7] = {row[6],col[1]}; lights[8] = {row[5],col[1]};lights[9] = {row[4],col[1]}; lights[10] = {row[3],col[1]}; lights[11] = {row[2],col[1]}; lights[12] = {row[1],col[1]}; lights[13] = {row[0],col[1]};
   lights[14] = {row[0],col[2]}; lights[15] = {row[1],col[2]};lights[16] = {row[2],col[2]}; lights[17] = {row[3],col[2]}; lights[18] = {row[4],col[2]}; lights[19] = {row[5],col[2]};lights[20] = {row[6],col[2]};
   lights[21] = {row[6],col[3]}; lights[22] = {row[5],col[3]};lights[23] = {row[4],col[3]}; lights[24] = {row[3],col[3]}; lights[25] = {row[2],col[3]}; lights[26] = {row[0],col[3]};lights[27] = {row[1],col[3]};
-  
   Serial.begin(115200);
 
 }
 
 void loop() {
+  //Raw writing an LED On
   //digitalWrite(2,HIGH); //ROWS GO HIGH
   //digitalWrite(9,LOW);  //COLUMNS GO LOW
-  //Spiral();
+  
   Spiral();
   allOff();
   for(int i = 0; i<10; i++){ 
-    PinWheel();
+    Alternate();
   }
   allOff();
   for(int i = 0; i<10; i++){ 
     Centric();
   }
+  for(int i = 0; i<10; i++){ 
+    PinWheel();
+  }
   allOff();
-
 }
 
 void turnOn(led l) { 
@@ -149,10 +151,38 @@ void Centric() {
     turnOff(lights[i]);
   }
  }
-  for(int t = 0; t<dTime; t++){ 
+  for(int t = 0; t<dTime*2; t++){ 
   for (int i =24; i < 28; i++){ 
     turnOn(lights[i]);
     turnOff(lights[i]);
   }
  }
+ for(int t = 0; t<dTime; t++){ 
+  for (int i =16; i < 24; i++){ 
+    turnOn(lights[i]);
+    turnOff(lights[i]);
+  }
+ }
+}
+
+void Alternate() {
+  int midTrack = 24;  
+    for(int i=0; i<4; i++){ 
+    for(int t=0; t<dTime; t++){ 
+    //Outer Ring      
+      for(int r = 0; r< 15; r+=2) { 
+        turnOn(lights[(i%2)+r]);
+        turnOff(lights[(i%2)+r]); 
+      }
+      
+      for(int r = 22; r >=16; r-=2) { 
+        turnOn(lights[(i%2)+r]);
+        turnOff(lights[(i%2)+r]); 
+      }
+     if(midTrack == 28) { midTrack = 24;} 
+     turnOn(lights[midTrack]);
+     turnOff(lights[midTrack]);
+    }
+    midTrack++;
+  }
 }
